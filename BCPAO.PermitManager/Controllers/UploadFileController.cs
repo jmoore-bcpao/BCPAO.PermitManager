@@ -1,11 +1,15 @@
-﻿using BCPAO.PermitManager.Extensions;
+﻿using BCPAO.PermitManager.Data;
+using BCPAO.PermitManager.Extensions;
 using BCPAO.PermitManager.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Text;
@@ -16,10 +20,12 @@ namespace BCPAO.PermitManager.Controllers
 	public class UploadFileController : Controller
 	{
 		private readonly IHostingEnvironment _env;
+		private readonly IConfiguration _config;
 
-		public UploadFileController(IHostingEnvironment env)
+		public UploadFileController(IHostingEnvironment env, IConfiguration config)
 		{
 			_env = env;
+			_config = config;
 		}
 
 		[HttpPost("UploadFile")]
@@ -36,25 +42,36 @@ namespace BCPAO.PermitManager.Controllers
 				using (var stream = new FileStream(path, FileMode.Create))
 				{
 					await file.CopyToAsync(stream);
+					
+					var excel = new ExcelPackage(stream);
+					var dt = excel.ToDataTable();
+					
+					var cs = _config.GetConnectionString("DefaultConnection");
+
+					using (var sqlCopy = new SqlBulkCopy(cs))
+					{
+						sqlCopy.DestinationTableName = "[bcpao].[Permits]";
+						sqlCopy.BatchSize = 500;
+
+						// map property index to column index in table. in database table the first column is the identitycolumn
+						sqlCopy.ColumnMappings.Add(7, 2);
+
+
+						//var schema = conn.GetSchema("bcpao.Permits", new[] { null, null, table, null });
+						foreach (DataColumn sourceColumn in dt.Columns)
+						{
+							foreach (DataRow row in schema.Rows)
+							{
+								if (string.Equals(sourceColumn.ColumnName, (string)row["COLUMN_NAME"], StringComparison.OrdinalIgnoreCase))
+								{
+									sqlCopy.ColumnMappings.Add(sourceColumn.ColumnName, (string)row["COLUMN_NAME"]);
+									break;
+								}
+							}
+						}
+						sqlCopy.WriteToServer(dt);
+					}
 				}
-
-				//FileDetails fileDetails;
-				using (var reader = new StreamReader(file.OpenReadStream()))
-				{
-					var fileContents = await reader.ReadToEndAsync();
-					var parsedContentDisposition = ContentDispositionHeaderValue.Parse(file.ContentDisposition);
-					//fileDetails = new FileDetails
-					//{
-					//	Filename = parsedContentDisposition.FileName,
-					//	Content = fileContent
-					//};
-				}
-
-				//var excel = new ExcelPackage(fileContents);
-
-				// TODO: Parse Excel file and save to database
-
-				Import();
 
 				return RedirectToAction("Index", "Permit");
 			}
