@@ -1,0 +1,80 @@
+﻿@model BCPAO.PermitManager.Data.BuildingPermit
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>BuildingPermit</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="PropertyId" class="control-label"></label>
+                <input asp-for="PropertyId" class="form-control" />
+                <span asp-validation-for="PropertyId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParcelId" class="control-label"></label>
+                <input asp-for="ParcelId" class="form-control" />
+                <span asp-validation-for="ParcelId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PermitNumber" class="control-label"></label>
+                <input asp-for="PermitNumber" class="form-control" />
+                <span asp-validation-for="PermitNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PermitStatus" class="control-label"></label>
+                <input asp-for="PermitStatus" class="form-control" />
+                <span asp-validation-for="PermitStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IssueDate" class="control-label"></label>
+                <input asp-for="IssueDate" class="form-control" />
+                <span asp-validation-for="IssueDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FinalDate" class="control-label"></label>
+                <input asp-for="FinalDate" class="form-control" />
+                <span asp-validation-for="FinalDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PermitValue" class="control-label"></label>
+                <input asp-for="PermitValue" class="form-control" />
+                <span asp-validation-for="PermitValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PermitDesc" class="control-label"></label>
+                <input asp-for="PermitDesc" class="form-control" />
+                <span asp-validation-for="PermitDesc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PermitCode" class="control-label"></label>
+                <input asp-for="PermitCode" class="form-control" />
+                <span asp-validation-for="PermitCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DistrictAuthority" class="control-label"></label>
+                <input asp-for="DistrictAuthority" class="form-control" />
+                <span asp-validation-for="DistrictAuthority" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreateDate" class="control-label"></label>
+                <input asp-for="CreateDate" class="form-control" />
+                <span asp-validation-for="CreateDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

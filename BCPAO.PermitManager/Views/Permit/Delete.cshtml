@@ -1,0 +1,87 @@
+﻿@model BCPAO.PermitManager.Data.BuildingPermit
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>BuildingPermit</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PropertyId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PropertyId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ParcelId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ParcelId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PermitNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PermitNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PermitStatus)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PermitStatus)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IssueDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IssueDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FinalDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FinalDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PermitValue)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PermitValue)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PermitDesc)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PermitDesc)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PermitCode)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PermitCode)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DistrictAuthority)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DistrictAuthority)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreateDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreateDate)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="PermitId" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>File Upload/Import</h2>
+
+<div class="row" style="margin-top:40px;">
+	<div class="col-md-2">
+		<label>District Authority:</label>
+		<select class="form-control">
+			<option>Titusville</option>
+			<option>Melbourne</option>
+			<option>Melbourne Beach</option>
+			<option>Indialantic</option>
+			<option>Palm Bay</option>
+			<option>County</option>
+		</select>
+	</div>
+	<div class="col-md-4">
+		<label>File Format:</label>
+		<br />
+		<input type="checkbox" value="TXT" /> Text (TXT) file
+		<input type="checkbox" value="CSV" />  comma-separated values (CSV) file
+		<input type="checkbox" value="XLSX" /> Microsoft Excel (XLSX) file
+	</div>
+</div>
+<div class="row" style="margin-top:20px;">
+	<div class="col-md-12">
+		<div style="border: dashed 4px #ccc; border-radius:3px; height:300px; background-color: lightgoldenrodyellow; text-align:center; padding-top:80px;">
+			<form method="post" enctype="multipart/form-data" asp-controller="UploadFile">
+				<div class="form-group">
+					<div class="col-md-10">
+						<p>Upload one or more files using this form:</p>
+						<input type="file" name="file" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-10">
+						<input type="submit" value="Upload" />
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
