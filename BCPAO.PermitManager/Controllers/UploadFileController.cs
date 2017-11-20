@@ -21,11 +21,34 @@ namespace BCPAO.PermitManager.Controllers
 	{
 		private readonly IHostingEnvironment _env;
 		private readonly IConfiguration _config;
+		private readonly DatabaseContext _context;
 
-		public UploadFileController(IHostingEnvironment env, IConfiguration config)
+		public UploadFileController(IHostingEnvironment env, IConfiguration config, DatabaseContext context)
 		{
 			_env = env;
 			_config = config;
+			_context = context;
+		}
+
+		private static void ShowColumns(DataTable columnsTable)
+		{
+			//var selectedRows = from info in columnsTable.AsEnumerable()
+			//                                    select new
+			//                                    {
+			//                                             TableCatalog = info["TABLE_CATALOG"],
+			//                                             TableSchema = info["TABLE_SCHEMA"],
+			//                                             TableName = info["TABLE_NAME"],
+			//                                             ColumnName = info["COLUMN_NAME"],
+			//                                             DataType = info["DATA_TYPE"]
+			//                                    };
+
+			//Console.WriteLine("{0,-15}{1,-15}{2,-15}{3,-15}{4,-15}", "TableCatalog", "TABLE_SCHEMA", "TABLE_NAME", "COLUMN_NAME", "DATA_TYPE");
+
+			//foreach (var row in selectedRows)
+			//{
+			//       Console.WriteLine("{0,-15}{1,-15}{2,-15}{3,-15}{4,-15}", row.TableCatalog,
+			//                row.TableSchema, row.TableName, row.ColumnName, row.DataType);
+			//}
 		}
 
 		[HttpPost("UploadFile")]
@@ -42,34 +65,112 @@ namespace BCPAO.PermitManager.Controllers
 				using (var stream = new FileStream(path, FileMode.Create))
 				{
 					await file.CopyToAsync(stream);
-					
+
 					var excel = new ExcelPackage(stream);
+
 					var dt = excel.ToDataTable();
-					
-					var cs = _config.GetConnectionString("DefaultConnection");
+					//dt.Columns.Add("PropertyId", typeof(int));
+					//dt.Columns.Add("ParcelId", typeof(string));
+					//dt.Columns.Add("PermitNumber", typeof(string));
+					//dt.Columns.Add("IssueDate", typeof(DateTime));
+					//dt.Columns.Add("FinalDate", typeof(DateTime));
+					//dt.Columns.Add("PermitValue", typeof(decimal));
+					//dt.Columns.Add("PermitCode", typeof(string));
+					//dt.Columns.Add("PermitDesc", typeof(string));
+					//dt.Columns.Add("PermitStatus", typeof(string));
+					//dt.Columns.Add("DistrictAuthority", typeof(string));
+					//dt.Columns.Add("CreateDate", typeof(DateTime));
 
-					using (var sqlCopy = new SqlBulkCopy(cs))
+					var schema = "bcpao";
+					var table = "Permits";
+
+
+					var connString = _config.GetConnectionString("DefaultConnection");
+
+					using (var conn = new SqlConnection(connString))
 					{
-						sqlCopy.DestinationTableName = "[bcpao].[Permits]";
-						sqlCopy.BatchSize = 500;
+						conn.Open();
 
-						// map property index to column index in table. in database table the first column is the identitycolumn
-						sqlCopy.ColumnMappings.Add(7, 2);
+						DataTable metaDataTable = conn.GetSchema("MetaDataCollections");
+						DataTable databasesSchemaTable = conn.GetSchema("Databases");
+						DataTable allTablesSchemaTable = conn.GetSchema("Tables");
+						DataTable allColumnsSchemaTable = conn.GetSchema("Columns");
+						DataTable allIndexColumnsSchemaTable = conn.GetSchema("IndexColumns");
 
 
-						//var schema = conn.GetSchema("bcpao.Permits", new[] { null, null, table, null });
+						var bulkCopy = new SqlBulkCopy(conn);
+						bulkCopy.DestinationTableName = $"{schema}.{table}";
+						bulkCopy.BulkCopyTimeout = 0;
+						bulkCopy.BatchSize = 500;
+
+						// You can specify the Catalog, Schema, Table Name, Column Name to get the specified column(s).
+						// You can use four restrictions for Column, so you should create a 4 members array.
+						String[] columnRestrictions = new String[4];
+
+						columnRestrictions[0] = null;   // 0-member represents Catalog
+						columnRestrictions[1] = schema; // 1-member represents Schema
+						columnRestrictions[2] = table;  // 2-member represents Table Name
+						columnRestrictions[3] = null;   // 3-member represents Column Name
+
+						DataTable schemaTable = conn.GetSchema("Columns", columnRestrictions);
+
+						//ShowColumns(schemaTable);
+
 						foreach (DataColumn sourceColumn in dt.Columns)
 						{
-							foreach (DataRow row in schema.Rows)
+							foreach (DataRow row in schemaTable.Rows)
 							{
-								if (string.Equals(sourceColumn.ColumnName, (string)row["COLUMN_NAME"], StringComparison.OrdinalIgnoreCase))
+								if (string.Equals(sourceColumn.ColumnName, "Tax Account No", StringComparison.OrdinalIgnoreCase))
 								{
-									sqlCopy.ColumnMappings.Add(sourceColumn.ColumnName, (string)row["COLUMN_NAME"]);
+
+									var source = sourceColumn.ColumnName;
+									var destination = "PropertyId";
+
+									bulkCopy.ColumnMappings.Add(source, destination);
+
 									break;
 								}
+								//if (string.Equals(sourceColumn.ColumnName, "Permit Number", StringComparison.OrdinalIgnoreCase))
+								//{
+								//         bulkCopy.ColumnMappings.Add(sourceColumn.ColumnName, "PermitNumber");
+								//       break;
+								//}
+								//if (string.Equals(sourceColumn.ColumnName, "Issue Date", StringComparison.OrdinalIgnoreCase))
+								//{
+								//         bulkCopy.ColumnMappings.Add(sourceColumn.ColumnName, "IssueDate");
+								//       break;
+								//}
+								//if (string.Equals(sourceColumn.ColumnName, "Issue Amount", StringComparison.OrdinalIgnoreCase))
+								//{
+								//         bulkCopy.ColumnMappings.Add(sourceColumn.ColumnName, "IssueValue");
+								//       break;
+								//}
+								//if (string.Equals(sourceColumn.ColumnName, "Final Date", StringComparison.OrdinalIgnoreCase))
+								//{
+								//         bulkCopy.ColumnMappings.Add(sourceColumn.ColumnName, "FinalDate");
+								//       break;
+								//}
+								//if (string.Equals(sourceColumn.ColumnName, "Permit Code Description", StringComparison.OrdinalIgnoreCase))
+								//{
+								//         bulkCopy.ColumnMappings.Add(sourceColumn.ColumnName, "PermitCode");
+								//       break;
+								//}
+								//if (string.Equals(sourceColumn.ColumnName, "Structure Description", StringComparison.OrdinalIgnoreCase))
+								//{
+								//         bulkCopy.ColumnMappings.Add(sourceColumn.ColumnName, "PermitDesc");
+								//       break;
+								//}
+
+
+								//if (string.Equals(sourceColumn.ColumnName, (string)row["COLUMN_NAME"], StringComparison.OrdinalIgnoreCase))
+								//{
+								//         bulkCopy.ColumnMappings.Add(sourceColumn.ColumnName, (string)row["COLUMN_NAME"]);
+								//       break;
+								//}
 							}
 						}
-						sqlCopy.WriteToServer(dt);
+
+						bulkCopy.WriteToServer(dt);
 					}
 				}
 
