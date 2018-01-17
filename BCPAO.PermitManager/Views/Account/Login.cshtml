@@ -3,85 +3,67 @@
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Http.Authentication
 @model LoginViewModel
-@inject SignInManager<ApplicationUser> SignInManager
+@inject SignInManager<User> SignInManager
 
 @{
-    ViewData["Title"] = "Log in";
+   ViewData["Title"] = "BCPAO: Login";
+   Layout = "~/Views/Shared/_AccountLayout.cshtml";
 }
 
-<h2>@ViewData["Title"]</h2>
-<div class="row">
-    <div class="col-md-4">
-        <section>
-            <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-                <h4>Use a local account to log in.</h4>
-                <hr />
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label asp-for="RememberMe">
-                            <input asp-for="RememberMe" />
-                            @Html.DisplayNameFor(m => m.RememberMe)
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-default">Log in</button>
-                </div>
-                <div class="form-group">
-                    <p>
-                        <a asp-action="ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a>
-                    </p>
-                </div>
-            </form>
-        </section>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h4>Use another service to log in.</h4>
-            <hr />
-            @{
-                var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-                if (loginProviders.Count == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in loginProviders)
-                                {
-                                    <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.Name</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
-    </div>
+<div id="divForm" class="col-sm-6 col-sm-offset-3 l-form-5-box wow fadeInUp" style="display:none;">
+   <div class="l-form-5-top">
+      <div class="l-form-5-top-left">
+         <h3>BCPAO Permit Manager</h3>
+         <p>Please enter your login credentials.</p>
+      </div>
+      <div class="l-form-5-top-right">
+         <i class="fa fa-user-secret"></i>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-md-12">
+         <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" autocomplete="off" style="margin: 0 10px;">
+
+            @Html.AntiForgeryToken()
+            @*<div asp-validation-summary="All" class="text-danger"></div>*@
+
+            <div class="form-group">
+               <label asp-for="UserNameEmail" class="sr-only"></label>
+               <input asp-for="UserNameEmail" class="l-form-5-username form-control" placeholder="Username or email..." />
+               <span asp-validation-for="UserNameEmail" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+               <label asp-for="Password" class="sr-only"></label>
+               <input asp-for="Password" class="l-form-5-password form-control" placeholder="Password..." />
+               <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+               <button type="submit" class="btn">
+                  <i class="fa fa-sign-in-alt"></i>&nbsp;Secure Login
+               </button>
+            </div>
+
+            <div class="row">
+               <div class="col-xs-5">
+                  <div class="form-group" style="text-align:left;">
+                     <a asp-action="ForgotPassword">Forgot your password?</a>&nbsp;<i class="fas fa-unlock"></i>
+                  </div>
+               </div>
+               <div class="col-xs-7">
+                  <div class="form-group" style="text-align:right;">
+                     <a href="https://www.bcpao.us">Brevard County Property Appraiser</a>&nbsp;<i class="fas fa-external-link-alt"></i>
+                  </div>
+               </div>
+            </div>
+
+         </form>
+      </div>
+   </div>
 </div>
 
+
 @section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
+   @await Html.PartialAsync("_ValidationScriptsPartial")
 }

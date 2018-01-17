@@ -1,16 +1,26 @@
-﻿using BCPAO.PermitManager.Models;
+﻿using BCPAO.PermitManager.Data.Config;
+using BCPAO.PermitManager.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BCPAO.PermitManager.Data
 {
-	public class DatabaseContext : IdentityDbContext<ApplicationUser>
-    {
+	public class DatabaseContext : IdentityDbContext<User, Role, int>
+	{
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
         }
 
-		public DbSet<BuildingPermit> BuildingPermits { get; set; }
+
+		public virtual new DbSet<User> Users { get; set; }
+		public virtual new DbSet<Role> Roles { get; set; }
+
+		public virtual DbSet<Permission> Permissions { get; set; }
+		public virtual DbSet<RolePermission> RolePermissions { get; set; }
+		public virtual DbSet<UserPermission> UserPermissions { get; set; }
+
+		public virtual DbSet<Permit> Permits { get; set; }
+		public virtual DbSet<UserProfile> UserProfiles { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
@@ -21,20 +31,23 @@ namespace BCPAO.PermitManager.Data
 
 			builder.HasDefaultSchema("bcpao");
 
-			builder.Entity<BuildingPermit>(entity =>
-			{
-				entity.HasKey(e => e.PermitId);
-				entity.Property(e => e.PropertyId);
-				entity.Property(e => e.ParcelId);
-				entity.Property(e => e.PermitNumber);
-				entity.Property(e => e.PermitCode);
-				entity.Property(e => e.PermitDesc);
-				entity.Property(e => e.PermitValue);
-				entity.Property(e => e.PermitStatus);
-				entity.Property(e => e.IssueDate);
-				entity.Property(e => e.FinalDate);
-				entity.ToTable("Permits");
-			});
-        }
+			builder.ApplyConfiguration(new PermitConfig());
+
+			builder.ApplyConfiguration(new PermissionConfig());
+
+			builder.ApplyConfiguration(new RoleConfig());
+			builder.ApplyConfiguration(new RoleClaimConfig());
+			builder.ApplyConfiguration(new RolePermissionConfig());
+
+			builder.ApplyConfiguration(new UserConfig());
+			builder.ApplyConfiguration(new UserClaimConfig());
+			builder.ApplyConfiguration(new UserLoginConfig());
+			builder.ApplyConfiguration(new UserTokenConfig());
+			builder.ApplyConfiguration(new UserPermissionConfig());
+
+			builder.ApplyConfiguration(new UserRoleConfig());
+			builder.ApplyConfiguration(new UserProfileConfig());
+
+		}
     }
 }

@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>BCPAO Account Login</title>
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic">
+   <link rel="stylesheet" href="~/lib/bootstrap-login-forms/form-5/assets/bootstrap/css/bootstrap.min.css">
+   <link rel="stylesheet" href="~/lib/bootstrap-login-forms/form-5/assets/font-awesome/css/font-awesome.min.css">
+   <link rel="stylesheet" href="~/lib/bootstrap-login-forms/form-5/assets/css/animate.css">
+   <link rel="stylesheet" href="~/lib/bootstrap-login-forms/form-5/assets/css/awesome-bootstrap-checkbox.css">
+   <link rel="stylesheet" href="~/lib/bootstrap-login-forms/form-5/assets/css/style.css" />
+
+   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+   <!--[if lt IE 9]>
+       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+   <![endif]-->
+   <!-- Favicon and touch icons -->
+   <link rel="shortcut icon" href="~/lib/bootstrap-login-forms/form-5/assets/ico/favicon.png">
+   <link rel="apple-touch-icon-precomposed" sizes="144x144" href="~/lib/bootstrap-login-forms/form-5/assets/ico/apple-touch-icon-144-precomposed.png">
+   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="~/lib/bootstrap-login-forms/form-5/assets/ico/apple-touch-icon-114-precomposed.png">
+   <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/lib/bootstrap-login-forms/form-5/assets/ico/apple-touch-icon-72-precomposed.png">
+   <link rel="apple-touch-icon-precomposed" href="~/lib/bootstrap-login-forms/form-5/assets/ico/apple-touch-icon-57-precomposed.png">
+
+   <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
+</head>
+<body>
+
+   <div class="l-form-5-container section-container section-container-image-bg">
+      <div class="container">
+         <div class="row">
+            @RenderBody()
+         </div>
+      </div>
+   </div>
+
+   <script src="~/lib/bootstrap-login-forms/form-5/assets/js/jquery-3.2.1.min.js"></script>
+   <script src="~/lib/bootstrap-login-forms/form-5/assets/js/jquery-migrate-3.0.0.min.js"></script>
+   <script src="~/lib/bootstrap-login-forms/form-5/assets/bootstrap/js/bootstrap.min.js"></script>
+   <script src="~/lib/bootstrap-login-forms/form-5/assets/js/jquery.backstretch.min.js"></script>
+   <script src="~/lib/bootstrap-login-forms/form-5/assets/js/wow.min.js"></script>
+   <script src="~/lib/bootstrap-login-forms/form-5/assets/js/retina-1.1.0.min.js"></script>
+   <script src="~/lib/bootstrap-login-forms/form-5/assets/js/waypoints.min.js"></script>
+   <script src="~/lib/bootstrap-login-forms/form-5/assets/js/scripts.js"></script>
+   
+   <!--[if lt IE 10]>
+       <script src="~/lib/bootstrap-login-forms/form-5/assets/js/placeholder.js"></script>
+   <![endif]-->
+
+   @RenderSection("Scripts", required: false)
+</body>
+</html>
+

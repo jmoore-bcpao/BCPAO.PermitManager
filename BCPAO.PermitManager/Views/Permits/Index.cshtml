@@ -1,0 +1,109 @@
+﻿@model IEnumerable<Permit>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+	.table tbody tr:hover td, .table tbody tr:hover th {
+		cursor: pointer;
+		background-color: yellow;
+	}
+</style>
+
+<div style="margin-bottom:20px; text-align:center;">
+	<h2>City of Titusville: Permit Data Import - July 2017</h2>
+	Total Permits: <b>264</b> Total Amount: <b>$19,906,579.62</b> Uploaded: <b>11/20/2017 4:12 PM</b>
+</div>
+
+@*<p><a asp-action="Create">Create New</a></p>*@
+
+
+<div class="table-responsive">
+	<table class="table table-condensed table-striped table-hover table-bordered">
+		<thead>
+			<tr>
+				<th style="width:120px">
+					@Html.DisplayNameFor(model => model.PermitNumber)
+				</th>
+				<th style="width:100px; text-align:center;">
+					@Html.DisplayNameFor(model => model.PropertyId)
+				</th>
+				@*<th style="width:100px">
+						@Html.DisplayNameFor(model => model.ParcelId)
+				</th>*@
+				@*<th style="width:110px">
+						@Html.DisplayNameFor(model => model.PermitStatus)
+				</th>*@
+				<th style="width:120px; text-align:center;">
+					@Html.DisplayNameFor(model => model.PermitValue)
+				</th>
+				<th style="width:100px; text-align:center;">
+					@Html.DisplayNameFor(model => model.IssueDate)
+				</th>
+				<th style="width:100px; text-align:center;">
+					@Html.DisplayNameFor(model => model.FinalDate)
+				</th>
+				<th style="width:100px; text-align:center;">
+					@Html.DisplayNameFor(model => model.PermitCode)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.PermitDesc)
+				</th>
+				@*<th style="width:100px">
+						@Html.DisplayNameFor(model => model.DistrictAuthority)
+				</th>*@
+				@*<th style="width:100px">
+						@Html.DisplayNameFor(model => model.CreateDate)
+				</th>*@
+				@*<th></th>*@
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td style="@(item.PermitNumber == null ? "background-color:red" : "")">
+						@Html.DisplayFor(modelItem => item.PermitNumber)
+					</td>
+					<td style="text-align:center; @(item.PropertyId == null ? "background-color:red" : "")">
+						@Html.DisplayFor(modelItem => item.PropertyId)
+					</td>
+					@*<td>
+							@Html.DisplayFor(modelItem => item.ParcelId)
+					</td>*@
+					@*<td>
+							@Html.DisplayFor(modelItem => item.PermitStatus)
+						</td>*@
+					<td style="text-align:right; @(item.PermitValue == null ? "background-color:red" : "")">
+						@Html.DisplayFor(modelItem => item.PermitValue)
+					</td>
+					<td style="text-align:center; @(item.IssueDate == null ? "background-color:red" : "")">
+						@Html.DisplayFor(modelItem => item.IssueDate)
+					</td>
+					<td style="text-align:center; @(item.FinalDate == null ? "background-color:red" : "")">
+						@Html.DisplayFor(modelItem => item.FinalDate)
+					</td>
+					<td style="text-align:center; @(item.PermitCode == null ? "background-color:red" : "")">
+						@Html.DisplayFor(modelItem => item.PermitCode)
+					</td>
+					<td style="@(item.PermitDesc == null ? "background-color:red" : "")">
+						@Html.DisplayFor(modelItem => item.PermitDesc)
+					</td>
+					@*<td>
+							@Html.DisplayFor(modelItem => item.DistrictAuthority)
+						</td>*@
+					@*<td>
+							@Html.DisplayFor(modelItem => item.CreateDate)
+						</td>*@
+					@*<td>
+							<a asp-action="Edit" asp-route-id="@item.PermitId">Edit</a> |
+							<a asp-action="Details" asp-route-id="@item.PermitId">Details</a> |
+							<a asp-action="Delete" asp-route-id="@item.PermitId">Delete</a>
+						</td>*@
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
+

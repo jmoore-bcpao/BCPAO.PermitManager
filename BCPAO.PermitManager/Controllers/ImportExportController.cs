@@ -117,7 +117,7 @@ namespace BCPAO.PermitManager.Controllers
 					};
 				}
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				return null;
 				//return "Some error occured while importing: " + ex.Message;

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Bootstrap Login Form</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic">        
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="assets/css/animate.css">
+        <link rel="stylesheet" href="assets/css/awesome-bootstrap-checkbox.css">
+        <link rel="stylesheet" href="assets/css/style.css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- Favicon and touch icons -->
+        <link rel="shortcut icon" href="assets/ico/favicon.png">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+
+    </head>
+
+    <body>
+
+		<!-- Top menu -->
+		<nav class="navbar navbar-inverse navbar-fixed-top navbar-no-bg" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="">Bootstrap Login Form</a>
+				</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="top-navbar-1">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#">Menu item 1</a></li>
+						<li><a href="#">Item 2</a></li>
+						<li><a href="#">Item 3</a></li>
+						<li><a href="#">Item 4</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<!-- Login Form 2 -->
+		<div class="l-form-2-container section-container">
+	        <div class="container">
+	            <div class="row">
+	                <div class="col-sm-8 col-sm-offset-2 l-form-2 section-description wow fadeIn">
+	                    <h2>Bootstrap Login Form</h2>
+	                    <div class="divider-1 wow fadeInUp"><span></span></div>
+	                    <p>Login form with light colors, white background and some text on the right.</p>
+	                </div>
+	            </div>
+	            <div class="row">
+	            	<div class="col-sm-6 l-form-2-box wow fadeInLeft">
+	                    
+	                    <div class="l-form-2-top">
+                    		<div class="l-form-2-top-left">
+                    			<h3>Login to our site</h3>
+								<p>Enter your username and password to log on:</p>
+                    		</div>
+                    		<div class="l-form-2-top-right">
+                    			<i class="fa fa-lock"></i>
+                    		</div>
+                        </div>
+                        <div class="l-form-2-bottom">
+		                    <form role="form" action="" method="post">		                        
+		                        <div class="form-group">
+		                    		<label class="sr-only" for="l-form-2-username">Username</label>
+		                        	<input type="text" name="l-form-2-username" placeholder="Username..." class="l-form-2-username form-control" id="l-form-2-username">
+		                        </div>
+		                        <div class="form-group">
+		                        	<label class="sr-only" for="l-form-2-password">Password</label>
+		                        	<input type="password" name="l-form-2-password" placeholder="Password..." class="l-form-2-password form-control" id="l-form-2-password">
+		                        </div>
+		                        <button type="submit" class="btn">Sign in!</button>
+		                        <div class="checkbox">
+		                        	<input type="checkbox" id="remember-me" class="styled">
+		                        	<label for="remember-me">Remember me</label>
+		                        </div>
+		                    </form>
+	                    </div>
+	                    
+	                </div>
+	                <div class="col-sm-6 l-form-2-box l-form-2-box-text wow fadeInUp">
+	                	<h3>Some text on the right</h3>
+	                	<p class="medium-paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. 
+	                		Ut wisi enim ad minim veniam, quis nostrud.</p>
+	                	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. 
+	                		Ut wisi <span class="red">enim ad minim</span> veniam, quis nostrud. Exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea 
+	                		commodo consequat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl.</p>
+	                </div>
+	            </div>
+	            <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1 l-form-2-social-login wow fadeInUp">
+                    	<h3>...or login with:</h3>
+                    	<div class="l-form-2-social-login-buttons">
+                        	<a class="btn btn-link-1 btn-link-1-facebook" href="#">
+                        		<i class="fa fa-facebook"></i> Facebook
+                        	</a>
+                        	<a class="btn btn-link-1 btn-link-1-twitter" href="#">
+                        		<i class="fa fa-twitter"></i> Twitter
+                        	</a>
+                        	<a class="btn btn-link-1 btn-link-1-google-plus" href="#">
+                        		<i class="fa fa-google-plus"></i> Google Plus
+                        	</a>
+                    	</div>
+                    </div>
+                </div>
+	        </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+	        <div class="container">
+	        	<div class="row">
+                    <div class="col-sm-12 footer-social">
+                    	<a href="#"><i class="fa fa-facebook"></i></a>
+                    	<a href="#"><i class="fa fa-dribbble"></i></a>
+                    	<a href="#"><i class="fa fa-twitter"></i></a>
+                    	<a href="#"><i class="fa fa-instagram"></i></a>
+                    </div>
+	            </div>
+	            <div class="row">
+                    <div class="col-sm-12 footer-copyright">
+                    	&copy; Bootstrap Login Form by <a href="http://azmind.com">Azmind</a>.
+                    </div>
+                </div>
+	        </div>
+        </footer>
+        
+
+        <!-- Javascript -->
+        <script src="assets/js/jquery-3.2.1.min.js"></script>
+        <script src="assets/js/jquery-migrate-3.0.0.min.js"></script>
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/js/wow.min.js"></script>
+        <script src="assets/js/retina-1.1.0.min.js"></script>
+        <script src="assets/js/scripts.js"></script>
+        
+        <!--[if lt IE 10]>
+            <script src="assets/js/placeholder.js"></script>
+        <![endif]-->
+
+    </body>
+
+</html>

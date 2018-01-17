@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using BCPAO.PermitManager.Models;
 using BCPAO.PermitManager.Models.ManageViewModels;
 using BCPAO.PermitManager.Services;
+using BCPAO.PermitManager.Data.Entities;
 
 namespace BCPAO.PermitManager.Controllers
 {
@@ -20,8 +21,8 @@ namespace BCPAO.PermitManager.Controllers
     [Route("[controller]/[action]")]
     public class ManageController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
@@ -29,8 +30,8 @@ namespace BCPAO.PermitManager.Controllers
         private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
         public ManageController(
-          UserManager<ApplicationUser> userManager,
-          SignInManager<ApplicationUser> signInManager,
+          UserManager<User> userManager,
+          SignInManager<User> signInManager,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
           UrlEncoder urlEncoder)
@@ -121,7 +122,7 @@ namespace BCPAO.PermitManager.Controllers
             }
 
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+            var callbackUrl = Url.EmailConfirmationLink(user.Id.ToString(), code, Request.Scheme);
             var email = user.Email;
             await _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
 
@@ -223,87 +224,6 @@ namespace BCPAO.PermitManager.Controllers
             StatusMessage = "Your password has been set.";
 
             return RedirectToAction(nameof(SetPassword));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> ExternalLogins()
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
-            var model = new ExternalLoginsViewModel { CurrentLogins = await _userManager.GetLoginsAsync(user) };
-            model.OtherLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync())
-                .Where(auth => model.CurrentLogins.All(ul => auth.Name != ul.LoginProvider))
-                .ToList();
-            model.ShowRemoveButton = await _userManager.HasPasswordAsync(user) || model.CurrentLogins.Count > 1;
-            model.StatusMessage = StatusMessage;
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LinkLogin(string provider)
-        {
-            // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-            // Request a redirect to the external login provider to link a login for the current user
-            var redirectUrl = Url.Action(nameof(LinkLoginCallback));
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, _userManager.GetUserId(User));
-            return new ChallengeResult(provider, properties);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> LinkLoginCallback()
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
-            var info = await _signInManager.GetExternalLoginInfoAsync(user.Id);
-            if (info == null)
-            {
-                throw new ApplicationException($"Unexpected error occurred loading external login info for user with ID '{user.Id}'.");
-            }
-
-            var result = await _userManager.AddLoginAsync(user, info);
-            if (!result.Succeeded)
-            {
-                throw new ApplicationException($"Unexpected error occurred adding external login for user with ID '{user.Id}'.");
-            }
-
-            // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-            StatusMessage = "The external login was added.";
-            return RedirectToAction(nameof(ExternalLogins));
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveLogin(RemoveLoginViewModel model)
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
-            var result = await _userManager.RemoveLoginAsync(user, model.LoginProvider, model.ProviderKey);
-            if (!result.Succeeded)
-            {
-                throw new ApplicationException($"Unexpected error occurred removing external login for user with ID '{user.Id}'.");
-            }
-
-            await _signInManager.SignInAsync(user, isPersistent: false);
-            StatusMessage = "The external login was removed.";
-            return RedirectToAction(nameof(ExternalLogins));
         }
 
         [HttpGet]
