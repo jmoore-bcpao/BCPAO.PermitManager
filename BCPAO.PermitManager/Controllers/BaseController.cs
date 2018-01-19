@@ -13,12 +13,29 @@ namespace BCPAO.PermitManager.Controllers
 	public class BaseController : Controller
 	{
 		protected readonly UserManager<User> _userManager;
-		protected DatabaseContext _context;
+		protected readonly RoleManager<Role> _roleManager;
+		protected readonly IPermitRepository _repo;
+		protected readonly DatabaseContext _context;
 
-		public BaseController(UserManager<User> userManager, DatabaseContext context)
+		public BaseController(UserManager<User> userManager, IPermitRepository repo)
+		{
+			_userManager = userManager;
+			_repo = repo;
+		}
+
+		public BaseController(UserManager<User> userManager, DatabaseContext context, IPermitRepository repo)
 		{
 			_userManager = userManager;
 			_context = context;
+			_repo = repo;
+		}
+
+		public BaseController(UserManager<User> userManager, RoleManager<Role> roleManager, DatabaseContext context, IPermitRepository repo)
+		{
+			_userManager = userManager;
+			_roleManager = roleManager;
+			_context = context;
+			_repo = repo;
 		}
 
 		protected void AddErrors(IdentityResult result)

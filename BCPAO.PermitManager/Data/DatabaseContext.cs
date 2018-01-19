@@ -7,9 +7,9 @@ namespace BCPAO.PermitManager.Data
 {
 	public class DatabaseContext : IdentityDbContext<User, Role, int>
 	{
-        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
-        {
-        }
+		public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
+		{
+		}
 
 
 		public virtual new DbSet<User> Users { get; set; }
@@ -49,5 +49,5 @@ namespace BCPAO.PermitManager.Data
 			builder.ApplyConfiguration(new UserProfileConfig());
 
 		}
-    }
+	}
 }

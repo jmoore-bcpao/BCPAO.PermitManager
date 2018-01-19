@@ -11,7 +11,7 @@ using System;
 namespace BCPAO.PermitManager.Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20180117215941_Initial")]
+    [Migration("20180118200255_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,6 +46,54 @@ namespace BCPAO.PermitManager.Data.Migrations
                         .HasName("UK_Permission");
 
                     b.ToTable("Permissions");
+                });
+
+            modelBuilder.Entity("BCPAO.PermitManager.Data.Entities.Permit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<string>("DistrictAuthority")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("FinalDate");
+
+                    b.Property<string>("IssueDate");
+
+                    b.Property<string>("ParcelId")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("PermitCode")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("PermitDesc")
+                        .HasMaxLength(500);
+
+                    b.Property<int>("PermitId");
+
+                    b.Property<string>("PermitNumber")
+                        .IsRequired();
+
+                    b.Property<string>("PermitStatus")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("PermitValue")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("PropertyId")
+                        .HasMaxLength(10);
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasAlternateKey("PermitNumber");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Permits");
                 });
 
             modelBuilder.Entity("BCPAO.PermitManager.Data.Entities.Role", b =>
@@ -94,6 +142,8 @@ namespace BCPAO.PermitManager.Data.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
+
+                    b.Property<DateTime>("CreateDate");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256);
@@ -170,57 +220,10 @@ namespace BCPAO.PermitManager.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("UserProfiles");
-                });
-
-            modelBuilder.Entity("BCPAO.PermitManager.Data.Permit", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreateDate");
-
-                    b.Property<string>("DistrictAuthority")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("FinalDate");
-
-                    b.Property<string>("IssueDate");
-
-                    b.Property<string>("ParcelId")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("PermitCode")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("PermitDesc")
-                        .HasMaxLength(500);
-
-                    b.Property<int>("PermitId");
-
-                    b.Property<string>("PermitNumber")
-                        .IsRequired();
-
-                    b.Property<string>("PermitStatus")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("PermitValue")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("PropertyId")
-                        .HasMaxLength(10);
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasAlternateKey("PermitNumber");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Permits");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -306,6 +309,14 @@ namespace BCPAO.PermitManager.Data.Migrations
                     b.ToTable("UserTokens");
                 });
 
+            modelBuilder.Entity("BCPAO.PermitManager.Data.Entities.Permit", b =>
+                {
+                    b.HasOne("BCPAO.PermitManager.Data.Entities.User", "User")
+                        .WithMany("Permits")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("BCPAO.PermitManager.Data.Entities.RolePermission", b =>
                 {
                     b.HasOne("BCPAO.PermitManager.Data.Entities.Permission", "Permission")
@@ -335,16 +346,8 @@ namespace BCPAO.PermitManager.Data.Migrations
             modelBuilder.Entity("BCPAO.PermitManager.Data.Entities.UserProfile", b =>
                 {
                     b.HasOne("BCPAO.PermitManager.Data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("BCPAO.PermitManager.Data.Permit", b =>
-                {
-                    b.HasOne("BCPAO.PermitManager.Data.Entities.User", "User")
-                        .WithMany("Permits")
-                        .HasForeignKey("UserId")
+                        .WithOne("Profile")
+                        .HasForeignKey("BCPAO.PermitManager.Data.Entities.UserProfile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

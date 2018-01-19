@@ -17,7 +17,6 @@ using BCPAO.PermitManager.Data.Entities;
 
 namespace BCPAO.PermitManager.Controllers
 {
-    [Authorize]
     [Route("[controller]/[action]")]
     public class ManageController : Controller
     {

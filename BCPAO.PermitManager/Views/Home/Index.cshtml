@@ -1,5 +1,63 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@inject UserManager<User> UserManager
+@{
+   ViewData["Title"] = "Home Page";
 }
 
 <h1>Dashboard</h1>
+
+<div class="jumbotron">
+   <div class="row">
+      <div class="col-md-1">
+         <img src="~/img/cot-seal.png" alt="Logo" />
+      </div>
+      <div class="col-md-11">
+         <h1 class="display-4">City of Titusville: Permit Data Import</h1>
+         <p class="lead">This is a simple web application to help manage collecting of permit data from surrounding municipalities in Brevard County.</p>
+      </div>
+   </div>
+   <hr class="my-4">
+   <p>The application uses file upload (formats: XLS, XLSX, CSV, TXT) to collect the data, parse, and stores into a database.</p>
+   <p class="lead">
+      <a class="btn btn-primary btn-lg" role="button" asp-controller="Upload" asp-action="Index"><i class="fas fa-upload"></i>&nbsp;Upload a file...</a>
+      <a class="btn btn-info btn-lg" role="button" asp-controller="Upload" asp-action="Index"><i class="fas fa-binoculars"></i>&nbsp;Review uploads...</a>
+   </p>
+</div>
+
+<div class="row">
+   <div class="col-sm-3">
+      <div class="card">
+         <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+         </div>
+      </div>
+   </div>
+   <div class="col-sm-3">
+      <div class="card">
+         <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+         </div>
+      </div>
+   </div>
+   <div class="col-sm-3">
+      <div class="card">
+         <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+         </div>
+      </div>
+   </div>
+   <div class="col-sm-3">
+      <div class="card">
+         <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+         </div>
+      </div>
+   </div>
+</div>

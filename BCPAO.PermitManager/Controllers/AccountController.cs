@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace BCPAO.PermitManager.Controllers
 {
-	[Authorize]
 	[Route("[controller]/[action]")]
 	public class AccountController : Controller
 	{

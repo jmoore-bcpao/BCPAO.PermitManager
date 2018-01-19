@@ -16,6 +16,7 @@ namespace BCPAO.PermitManager.Data.Config
 			builder.Property(e => e.NormalizedEmail).HasMaxLength(256);
 			builder.Property(e => e.NormalizedUserName).HasMaxLength(256);
 			builder.Property(e => e.UserName).HasMaxLength(256);
+			builder.Property(e => e.CreateDate);
 			builder.HasMany(d => d.UserPermissions).WithOne(p => p.User).HasForeignKey(d => d.UserId);
 
 			// Prevents duplicate foreign keys when running EF Core Migrations

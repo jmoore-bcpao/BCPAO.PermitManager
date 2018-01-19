@@ -1,11 +1,13 @@
 ﻿using BCPAO.PermitManager.Data;
 using BCPAO.PermitManager.Data.Entities;
-using BCPAO.PermitManager.Data.Extensions;
 using BCPAO.PermitManager.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,12 +16,15 @@ namespace BCPAO.PermitManager
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration)
+		public IConfiguration Configuration { get; }
+		private readonly IHostingEnvironment _hostingEnv;
+
+		public Startup(IConfiguration configuration, IHostingEnvironment hostingEnv)
 		{
 			Configuration = configuration;
+			_hostingEnv = hostingEnv;
 		}
 
-		public IConfiguration Configuration { get; }
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
@@ -37,7 +42,22 @@ namespace BCPAO.PermitManager
 			services.AddTransient<IEmailSender, EmailSender>();
 			services.AddScoped<IPermitRepository, PermitRepository>();
 
-			services.AddMvc();
+			// Requires all authentication on all controllers. Use [AllowAnonymous] for anonymous access.
+			services.AddMvc(config =>
+			{
+				var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+				config.Filters.Add(new AuthorizeFilter(policy));
+			});
+			
+			var skipSSL = Configuration.GetValue<bool>("LocalTest:skipSSL");
+			services.Configure<MvcOptions>(options =>
+			{
+				if (_hostingEnv.IsDevelopment() && !skipSSL)
+				{
+					options.Filters.Add(new RequireHttpsAttribute());
+				}
+			});
+
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,14 +85,25 @@ namespace BCPAO.PermitManager
 						 template: "{controller=Home}/{action=Index}/{id?}");
 			});
 
-			using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-			{
-				if (!serviceScope.ServiceProvider.GetService<DatabaseContext>().AllMigrationsApplied())
-				{
-					serviceScope.ServiceProvider.GetService<DatabaseContext>().Database.Migrate();
-					serviceScope.ServiceProvider.GetService<DatabaseContext>().EnsureSeeded();
-				}
-			}
+			var defaultAdminPwd = Configuration["defaultAdminPwd"];
+			
+			//try
+			//{
+			//	SeedData.Initialize(app.ApplicationServices, defaultAdminPwd).Wait();
+			//}
+			//catch (Exception)
+			//{
+			//	throw;
+			//}
+
+			//using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+			//{
+			//	if (!serviceScope.ServiceProvider.GetService<DatabaseContext>().AllMigrationsApplied())
+			//	{
+			//		serviceScope.ServiceProvider.GetService<DatabaseContext>().Database.Migrate();
+			//		serviceScope.ServiceProvider.GetService<DatabaseContext>().EnsureSeeded();
+			//	}
+			//}
 		}
 	}
 }
